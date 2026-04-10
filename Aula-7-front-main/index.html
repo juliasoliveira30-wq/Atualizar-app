@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Smash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="https://em-content.zobj.net/source/apple/81/hamburger_1f354.png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        barlow: ['Barlow', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#c94b1d'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-barlow text-gray-800">
+
+    <!-- ================= HEADER ================= -->
+    <header class="flex items-center justify-between px-6 mt-[5vh]">
+
+        <a href="#" class="flex items-center gap-4">
+            <img src="./assets/images/logo-urban-smash.svg" alt="Logo Urban Smash" class="w-[30vw] max-w-[140px]">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-900">Urban Smash</h1>
+                <p class="text-sm text-gray-500">Hamburgueria artesanal</p>
+            </div>
+        </a>
+
+        <!-- Botão hamburguer -->
+        <button id="menuBtn" class="md:hidden text-3xl">
+            ☰
+        </button>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden md:block">
+            <ul class="flex gap-8 text-lg">
+                <li><a href="#cardapio" class="hover:text-primary transition font-semibold">Cardápio</a></li>
+                <li><a href="#contato" class="hover:text-primary transition font-semibold">Contato</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <!-- Menu Mobile -->
+    <div id="mobileMenu"
+        class="fixed top-0 right-[-100%] w-[70%] h-full bg-white shadow-lg transition-all duration-300 p-8 md:hidden z-50">
+
+        <button id="closeBtn" class="text-2xl mb-6">
+            ✕
+        </button>
+
+        <ul class="flex flex-col gap-6 text-lg">
+            <li><a href="#cardapio" class="hover:text-primary">Cardápio</a></li>
+            <li><a href="#contato" class="hover:text-primary">Contato</a></li>
+        </ul>
+
+    </div>
+
+    <!-- ================= BANNER ================= -->
+    <section class="text-center p-8">
+
+        <div class="md:flex md:items-center md:justify-center md:gap-10">
+
+            <article class="md:w-[45%]">
+
+                <h1 class="text-2xl md:text-4xl font-semibold">
+                    O sabor mais suculento da hamburgueria da região
+                </h1>
+
+                <a href="#cardapio"
+                    class="inline-block mt-4 px-8 py-4 border border-gray-800 rounded-[3rem] text-lg min-h-[48px] hover:bg-primary hover:text-white transition">
+                    Confira o Menu
+                </a>
+
+            </article>
+
+            <figure class="md:w-[45%] mt-6 md:mt-0">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80" alt="Hambúrguer suculento" class="w-[70%] mx-auto rounded-[2rem] shadow-xl">
+            </figure>
+
+        </div>
+
+    </section>
+
+    <!-- ================= CARDÁPIO ================= -->
+    <section id="cardapio" class="max-w-[90vw] mx-auto mt-[5vh] p-8">
+
+        <h2 class="text-3xl font-bold text-center mb-8">
+            Cardápio
+        </h2>
+
+        <!-- menu categoria inicio-->
+            <nav id="nav-categorias" class="overflow-x-auto whitespace-nowrap snap-x flex gap-2 mt-6 pb-1">
+                <div class="animate-pulse flex gap-2">
+                    <div class="h-8 w-20 bg-gray rounded-full"></div>
+                    <div class="h-8 w-20 bg-gray rounded-full"></div>
+                    <div class="h-8 w-20 bg-gray rounded-full"></div>
+                </div>
+
+            </nav>
+        <!--menu categoria fim-->       
+        <!--produto inicio-->
+            <div id="produtos-container" class="mt-8">
+                <div id="categorias-titulo" class="text-left text-gray-900 font-extrabold text-[22px] mb-4">
+                    iniciando...
+                </div>
+                <div id="lista-produtos" class="grid grid-cols-2 gap-4">
+
+                </div>
+            </div>
+        <!--produto fim-->
+
+    </section>
+
+    <script>
+        const navCategorias = document.getElementById('nav-categorias');
+        const listaProdutos = document.getElementById('lista-produtos');
+        const categoriaTitulo = document.getElementById('categorias-titulo');
+        let categoriasAtivaId = null;
+
+        const categoriasData = [
+            { id: 1, nome: 'Hambúrgueres' },
+            { id: 2, nome: 'Acompanhamentos' },
+            { id: 3, nome: 'Bebidas' },
+            { id: 4, nome: 'Sobremesas' }
+        ];
+
+        const produtosData = [
+            { id: 'h1', categoriaId: 1, nome: 'Classic', descricao: 'Pão brioche, hambúrguer de 180g, queijo, bacon crocante, alface e molho especial.', preco: 28.90, imagem: 'https://cdn.abrahao.com.br/base/f42/a37/d11/smash-burger.jpg' },
+            { id: 'h2', categoriaId: 1, nome: 'Cheese Supreme', descricao: 'Duplo burger, cheddar, cebola caramelizada, picles e maionese caseira.', preco: 32.50, imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPeBqsfZZ_35CklSHPDN5Rb0zWCpBnV_V8Gg&s' },
+            { id: 'h3', categoriaId: 1, nome: 'Veggie Delux', descricao: 'Hambúrguer de grão-de-bico, queijo vegano, tomate, alface e molho de ervas.', preco: 27.00, imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8v11MyTnN1Aw3j2T69EsQg9ds-90tUtlGyw&s' },
+            { id: 'a1', categoriaId: 2, nome: 'Batata Rústica', descricao: 'Porção de batatas rústicas crocantes com sazon e molho da casa.', preco: 14.50, imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ60czoPEPH42_BN-Gmpyj4Pj7fLVePwId6sw&s' },
+            { id: 'a2', categoriaId: 2, nome: 'Onion Rings', descricao: 'Círculos de cebola empanados e fritos até ficarem dourados.', preco: 13.00, imagem: 'https://www.recipeworkbook.com/wp-content/uploads/2021/09/onion-rings3.jpg' },
+            { id: 'b1', categoriaId: 3, nome: 'Refrigerante', descricao: 'Lata gelada de refrigerante clássico.', preco: 7.90, imagem: 'https://huggsburgerbrasil.com.br/wp-content/uploads/2023/01/LATAS-NO-GELO.png' },
+            { id: 'b2', categoriaId: 3, nome: 'Água Mineral', descricao: 'Água mineral natural geladinha.', preco: 5.50, imagem: 'https://static.escolakids.uol.com.br/2024/04/agua-mineral-sendo-despejada-em-um-copo-de-vidro.jpg' },
+            { id: 'b3', categoriaId: 3, nome: 'Suco Natural', descricao: 'Sucos naturais preparados na hora.', preco: 10.90, imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9RTcjDqY5TUJf74AreyoXF9l-rQfjgsvyNQ&s' },
+            { id: 's1', categoriaId: 4, nome: 'Milkshake de Morango', descricao: 'Milkshake cremoso de morango com chantilly.', preco: 16.90, imagem: 'https://static.itdg.com.br/images/1200-630/a8db77c38c26d60fc79536545d025d36/120309-original.jpg' }
+        ];
+
+        function carregarCategorias() {
+            renderizarBotoesCategorias();
+            if (categoriasData.length > 0) {
+                selecionarCategoria(categoriasData[0].id, categoriasData[0].nome);
+            }
+        }
+
+        function renderizarBotoesCategorias(){
+            navCategorias.innerHTML = '';
+            categoriasData.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'snap-start px-4 py-2 rounded-full font-bold text-sm transition-all duration-150 cursor-pointer flex-shrink-0 btn-cat';
+                btn.innerText = cat.nome;
+                btn.onclick = () => selecionarCategoria(cat.id, cat.nome);
+                btn.dataset.id = cat.id;
+                navCategorias.appendChild(btn);
+            });
+        }
+
+        function selecionarCategoria(id, nome) {
+            categoriasAtivaId = id;
+            categoriaTitulo.innerHTML = nome;
+            const botoes = document.querySelectorAll('.btn-cat');
+            botoes.forEach(btn => {
+                if (parseInt(btn.dataset.id) === id) {
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('bg-[#ebebeb]', 'text-gray-900');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-[#ebebeb]', 'text-gray-900');
+                }
+            });
+            carregarProdutos(id);
+        }
+
+        function carregarProdutos(categoriaId) {
+            listaProdutos.innerHTML = `<div class="col-span-2 py-10 flex justify-center">
+                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>`;
+            const produtos = produtosData.filter(prod => prod.categoriaId === categoriaId);
+            setTimeout(() => renderizarProdutos(produtos), 100);
+        }
+
+        function renderizarProdutos(produtos) {
+            listaProdutos.innerHTML = '';
+            if (produtos.length === 0){
+                listaProdutos.innerHTML = '<p class="col-span-2 text-gray-500 py-10">Nenhum produto nesta categoria.</p>';
+                return;
+            }
+            produtos.forEach(p => {
+                const precoFormatado = p.preco.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+                const imgSource = (p.imagem && p.imagem.startsWith('http')) ? p.imagem : `./assets/images/${p.imagem || 'hamburger.svg'}`;
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-[20px] p-3 shadow-sm border border-gray-100 relative flex flex-col hover:shadow-md transition-shadow group';
+                card.innerHTML = `
+                    <button type="button" class="absolute inset-0 z-0 cursor-pointer" onclick="abrirModalDetalhes('${p.nome}', ${p.preco}, '${p.descricao || ''}', '${imgSource}', '${p.id}')"></button>
+                    <img src="${imgSource}" alt="${p.nome}" class="w-full h-28 object-contain mb-2 mt-2 transition-transform duration-300 drop-shadow-sm group-hover:scale-105 relative z-10" onerror="this.src='./assets/images/hamburger.svg'">
+                    <div class="text-left w-full mt-auto relative z-10">
+                        <h4 class="font-bold text-gray-900 text-base leading-tight">${p.nome}</h4>
+                        <p class="text-sm text-gray-500 mt-1">${p.descricao}</p>
+                        <p class="font-black text-primary mt-4">${precoFormatado}</p>
+                    </div>
+                    <button onclick="adicionarItem('${p.id}', '${p.nome}', ${p.preco})" class="w-full bg-primary text-white py-2 rounded-xl text-sm font-bold mt-4 shadow-md hover:bg-[#9b351d] active:scale-95 transition-all z-10 relative">
+                        Adicionar ao pedido
+                    </button>`;
+                listaProdutos.appendChild(card);
+            });
+        }
+
+        carregarCategorias();
+    </script>
+
+    <!-- ================= FOOTER ================= -->
+   <footer id="contato" class="mt-24 text-center py-12 px-4 text-[0.875rem] text-white bg-[#333333]">
+        <h3 class="text-lg font-bold mb-2">Urban Smash</h3>
+        <p>📍 Rua do Sabor, 123, centro - Sorocaba</p>
+        <p>📞 Whatsapp: (15) 99833-5768</p>
+        <p>🕛 Aberto todos os dias das 12h às 23h</p>
+    </footer>
+
+    <a href="https://wa.me/5515991456699" target="_blank" class="fixed right-5 bottom-5">
+        <img src="./assets/images/whatsapp.png" alt="link-whatsapp" class="h-[3.25rem]">
+    </a>
+
+    <!-- MODAL DE DETALHES DO PRODUTO -->
+    <div id="detalhes-modal"
+        class="fixed inset-0 bg-black/70 z-[80] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+        <div class="bg-white w-full max-w-[400px] rounded-[30px] overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col"
+            id="detalhes-modal-content">
+
+            <!-- Botão Fechar -->
+            <button onclick="fecharModalDetalhes()"
+                    class="absolute top-4 right-4 bg-white/80 backdrop-blur-md text-gray-900 w-10 h-10 rounded-full flex justify-center items-center font-bold text-2xl shadow-sm z-10 hover:text-primary active:scale-90 transition-all">&times;</button>
+            <!-- Imagem -->
+            <div class="w-full h-[280px] bg-gray-50 flex justify-center items-center p-8 relative">
+                <div class="absolute inset-0 bg-gradient-to-b from-gray-100 to-white opacity-50"></div>
+                <img id="detalhes-img" src="" alt="Produto"
+                    class="w-full h-full object-contain drop-shadow-xl relative z-10 transition-transform duration-500 hover:scale-105">
+            </div>
+
+            <!-- Infos -->
+            <div class="p-6">
+                <h2 id="detalhes-nome" class="text-3xl font-black text-gray-900 mb-1 leading-tight tracking-tight">Nome do
+                    Produto</h2>
+                <p id="detalhes-preco" class="text-2xl font-black text-primary mb-4 drop-shadow-sm">R$ 0,00</p>
+                <div class="bg-gray-50 rounded-xl p-4 mb-6">
+                    <p id="detalhes-desc" class="text-gray-600 text-sm leading-relaxed font-medium">Descrição detalhada
+                        do produto vai aqui...</p>
+                </div>
+
+                <button id="detalhes-btn-add"
+                    class="w-full bg-gradient-to-r from-primary to-[#a82d2f] text-white py-4 rounded-xl text-[17px] font-extrabold shadow-[0_8px_20px_-6px_rgba(202,60,63,0.5)] hover:shadow-[0_8px_25px_-4px_rgba(202,60,63,0.6)] active:scale-[0.98] transition-all outline-none flex justify-center items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Adicionar ao Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RODAPÉ CARRINHO FIXO (Abre Modal) -->
+    <div id="carrinho-footer"
+        class="fixed bottom-0 left-0 w-full bg-primary text-white p-4 z-50 shadow-[0_-4px_6px_rgba(0,0,0,0.1)] transform translate-y-full transition-transform duration-300 flex justify-between items-center cursor-pointer"
+        onclick="abrirModalCarrinho()">
+        <div>
+            <p class="text-sm font-medium">Resumo do Pedido</p>
+            <p class="text-xl font-bold">Total: <span id="carrinho-total">R$ 0,00</span></p>
+        </div>
+        <button class="bg-white text-primary px-4 py-2 rounded-lg font-bold shadow-md active:scale-95 transition-all">
+            Ver Carrinho
+        </button>
+    </div>
+
+    <!-- MODAL DO CARRINHO (Detalhes) -->
+    <div id="carrinho-modal"
+        class="fixed inset-0 bg-black/60 z-[60] flex flex-col justify-end sm:justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+
+        <!-- Conteúdo do Modal -->
+        <div class="bg-white w-full sm:w-[500px] h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl flex flex-col transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300"
+            id="carrinho-modal-content">
+
+            <!-- Cabelho Modal -->
+            <div class="p-5 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Seu Carrinho</h2>
+                <button onclick="fecharModalCarrinho()"
+                    class="text-3xl font-bold text-gray-500 hover:text-gray-900 focus:outline-none">&times;</button>
+            </div>
+
+            <!-- Corpo Modal (Itens) -->
+            <div id="carrinho-itens-container" class="p-5 flex-1 overflow-y-auto flex flex-col gap-4">
+                <!-- Itens serão injetados aqui via JS -->
+            </div>
+
+            <!-- Rodapé Modal (Checkout) -->
+            <div class="p-5 border-t bg-gray-50 rounded-b-3xl sm:rounded-b-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-bold">Total do Pedido:</span>
+                    <span id="modal-carrinho-total" class="text-2xl font-black text-primary">R$ 0,00</span>
+                </div>
+                <button onclick="fecharPedido()" id="btn-fechar-pedido"
+                    class="w-full bg-primary text-white py-3 rounded-xl text-lg font-bold shadow-lg hover:bg-[#9b351d] active:scale-95 transition-all">
+                    Finalizar Pedido
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- script menu hamburguer -->
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.style.right = "0";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            mobileMenu.style.right = "-100%";
+        });
+    </script>
+
+    <script>
+        const modalDetalhes = document.getElementById('detalhes-modal');
+        const modalDetalhesContent = document.getElementById('detalhes-modal-content');
+        let carrinho = [];
+        const carrinhoFooter = document.getElementById('carrinho-footer');
+        const carrinhoTotalSpan = document.getElementById('carrinho-total');
+        const modal = document.getElementById('carrinho-modal');
+        const modalContent = document.getElementById('carrinho-modal-content');
+        const itensContainer = document.getElementById('carrinho-itens-container');
+        const modalTotalSpan = document.getElementById('modal-carrinho-total');
+
+        function abrirModalDetalhes(nome, preco, desc, img, id) {
+            if (navigator.vibrate) navigator.vibrate(40);
+            document.getElementById('detalhes-nome').innerText = nome;
+            document.getElementById('detalhes-preco').innerText = preco.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('detalhes-desc').innerText = desc;
+            document.getElementById('detalhes-img').src = img;
+            document.getElementById('detalhes-btn-add').onclick = function() {
+                adicionarItem(id, nome, preco);
+                fecharModalDetalhes();
+            };
+            modalDetalhes.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modalDetalhesContent.classList.remove('scale-95');
+                modalDetalhesContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function fecharModalDetalhes() {
+            modalDetalhesContent.classList.remove('scale-100');
+            modalDetalhesContent.classList.add('scale-95');
+            setTimeout(() => {
+                modalDetalhes.classList.add('opacity-0', 'pointer-events-none');
+            }, 300);
+        }
+
+        function inicializarCarrinho() {
+            const carrinhoSalvo = localStorage.getItem('hamburgueria_carrinho');
+            if (carrinhoSalvo) {
+                carrinho = JSON.parse(carrinhoSalvo);
+                atualizarInterfaceCart();
+            }
+        }
+
+        function adicionarItem(id, nome, preco) {
+            if (navigator.vibrate) navigator.vibrate(200);
+            const index = carrinho.findIndex(item => item.id === id);
+            if (index !== -1) {
+                carrinho[index].quantidade += 1;
+            } else {
+                carrinho.push({ id, nome, preco, quantidade: 1 });
+            }
+            atualizarCarrinho();
+        }
+
+        function abrirModalCarrinho() {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modalContent.classList.remove('translate-y-full', 'scale-95');
+            }, 10);
+        }
+
+        function fecharModalCarrinho() {
+            modalContent.classList.add('translate-y-full', 'scale-95');
+            setTimeout(() => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            }, 300);
+        }
+
+        function aumentarQuantidade(id) {
+            const index = carrinho.findIndex(item => item.id === id);
+            if (index !== -1) {
+                carrinho[index].quantidade += 1;
+                atualizarCarrinho();
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+        }
+
+        function diminuirQuantidade(id) {
+            const index = carrinho.findIndex(item => item.id === id);
+            if (index !== -1) {
+                if (carrinho[index].quantidade > 1) {
+                    carrinho[index].quantidade -= 1;
+                } else {
+                    carrinho.splice(index, 1);
+                    if (carrinho.length === 0) {
+                        fecharModalCarrinho();
+                    }
+                }
+                atualizarCarrinho();
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+        }
+
+        function atualizarCarrinho() {
+            localStorage.setItem('hamburgueria_carrinho', JSON.stringify(carrinho));
+            atualizarInterfaceCart();
+        }
+
+        function atualizarInterfaceCart() {
+            if (carrinho.length === 0) {
+                carrinhoFooter.classList.add('translate-y-full');
+                carrinhoTotalSpan.innerText = 'R$ 0,00';
+                modalTotalSpan.innerText = 'R$ 0,00';
+                itensContainer.innerHTML = '';
+                return;
+            }
+            const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+            const totalFormatado = total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            carrinhoTotalSpan.innerText = totalFormatado;
+            modalTotalSpan.innerText = totalFormatado;
+            carrinhoFooter.classList.remove('translate-y-full');
+            renderizarItensModal();
+        }
+
+        function renderizarItensModal() {
+            if (!itensContainer) return;
+            itensContainer.innerHTML = '';
+            carrinho.forEach(item => {
+                const subTotal = (item.preco * item.quantidade).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+                const precoUnit = item.preco.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+                const divItem = document.createElement('div');
+                divItem.className = 'flex justify-between items-center border-b p-4 mt-2';
+                divItem.innerHTML = `
+                    <div class="flex-1">
+                        <h4 class="font-bold text-lg text-gray-900">${item.nome}</h4>
+                        <p class="text-sm text-gray-500">${precoUnit}</p>
+                        <p class="text-primary font-bold mt-1">${subTotal}</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-gray-100 p-2 rounded-xl">
+                        <button onclick="diminuirQuantidade('${item.id}')" class="w-8 h-8 flex justify-center items-center bg-white rounded-lg font-bold text-xl shadow-sm hover:text-primary active:scale-95 transition-all">-</button>
+                        <span class="font-bold text-lg w-6 text-center">${item.quantidade}</span>
+                        <button onclick="aumentarQuantidade('${item.id}')" class="w-8 h-8 flex justify-center items-center bg-white rounded-lg font-bold text-xl shadow-sm hover:text-primary active:scale-95 transition-all">+</button>
+                    </div>`;
+                itensContainer.appendChild(divItem);
+            });
+        }
+
+        function fecharPedido() {
+            if (carrinho.length === 0) {
+                alert('Seu carrinho está vazio. Adicione algum hambúrguer antes de finalizar.');
+                return;
+            }
+            const btnPedido = document.getElementById('btn-fechar-pedido');
+            if (!btnPedido) return;
+            const btnOriginalText = btnPedido.innerText;
+            btnPedido.innerText = 'Finalizando...';
+
+            navigator.geolocation.getCurrentPosition(
+                (posicao) => {
+                    const lat = posicao.coords.latitude;
+                    const lon = posicao.coords.longitude;
+                    btnPedido.innerText = btnOriginalText;
+                    alert(`Pedido finalizado! \nSua localização: ${lat.toFixed(4)}, ${lon.toFixed(4)}\nBom apetite!`);
+                    carrinho = [];
+                    fecharModalCarrinho();
+                    atualizarCarrinho();
+                },
+                () => {
+                    btnPedido.innerText = btnOriginalText;
+                    alert('Pedido finalizado! Não foi possível obter a localização.');
+                    carrinho = [];
+                    fecharModalCarrinho();
+                    atualizarCarrinho();
+                }
+            );
+        }
+
+        inicializarCarrinho();
+    </script>
+
+</body>
+
+</html>
